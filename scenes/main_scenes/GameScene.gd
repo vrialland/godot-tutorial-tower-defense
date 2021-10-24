@@ -34,6 +34,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			cancel_build_mode()
 
 func initiate_build_mode(tower_type: String) -> void:
+	if build_mode:
+		cancel_build_mode()
 	build_type = tower_type + "T1"
 	build_mode = true
 	$UI.set_tower_preview(build_type, get_global_mouse_position(), GREEN)
@@ -58,7 +60,7 @@ func update_tower_preview() -> void:
 func cancel_build_mode() -> void:
 	build_mode = false
 	build_valid = false
-	$UI/TowerPreview.queue_free()
+	$UI/TowerPreview.free()
 	
 	
 func verify_and_build() -> void:
