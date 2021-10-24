@@ -9,7 +9,8 @@ var map_node: Node2D
 
 var build_mode: bool = false
 var build_valid: bool = false
-var build_location
+var build_location: Vector2
+var build_tile: Vector2
 var build_type: String
 
 
@@ -48,6 +49,7 @@ func update_tower_preview() -> void:
 		$UI.update_tower_preview(tile_position, GREEN)
 		build_valid = true
 		build_location = tile_position
+		build_tile = current_tile
 	else:
 		$UI.update_tower_preview(tile_position, RED)
 		build_valid = false
@@ -64,6 +66,7 @@ func verify_and_build() -> void:
 		var new_tower: Node2D = load("res://scenes/turrets/" + build_type + ".tscn").instance()
 		new_tower.position = build_location
 		map_node.get_node("Turrets").add_child(new_tower)
+		map_node.get_node("TowerExclusion").set_cellv(build_tile, 5)
 
 		
 
