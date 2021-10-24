@@ -9,12 +9,18 @@ var build_location: Vector2
 var build_tile: Vector2
 var build_type: String
 
+var current_wave: int = 0
+var enemies_in_wave: int = 0
+
 
 func _ready() -> void:
 	map_node = $Map1
 	
 	for button in get_tree().get_nodes_in_group("build_buttons"):
 		button.connect("pressed", self, "initiate_build_mode", [button.get_name()])
+		
+	start_next_wave()
+
 	
 func _process(delta) -> void:
 	if build_mode:
@@ -28,6 +34,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_released("ui_accept"):
 			verify_and_build()
 			cancel_build_mode()
+
+#
+# Building functions
+#
 
 func initiate_build_mode(tower_type: String) -> void:
 	if build_mode:
@@ -66,5 +76,25 @@ func verify_and_build() -> void:
 		map_node.get_node("Turrets").add_child(new_tower)
 		map_node.get_node("TowerExclusion").set_cellv(build_tile, 5)
 
-		
+#
+# Wave functions
+#
 
+func start_next_wave() -> void:
+	var wave_data = retrieve_wave_data()
+	yield(get_tree().create_timer(0.2), "timeout")
+	spawn_enemies(wave_data)
+	
+
+func retrieve_wave_data() -> Array:
+	var wave_data: Array = [["BlueTank", 0.7], ["BlueTank", 0.1]]
+	current_wave += 1
+	enemies_in_wave = wave_data.size()
+	return wave_data
+
+
+func spawn_enemies(wave_data: Array) -> void:
+	for enemy in wave_data:
+		var new_enemy: PathFollow2D = load("res://enemies/" + enemy[0] + ".tscn").instance()
+		map_node.get_node("Path").add_child(new_enemy, true)
+		yield(get_tree().create_timer(enemy[1]), "timeout")
