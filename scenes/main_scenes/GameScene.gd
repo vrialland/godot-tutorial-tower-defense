@@ -1,10 +1,6 @@
 extends Node2D
 
 
-const RED: Color = Color("adff4545")
-const GREEN: Color = Color("ad54ff3c")
-
-
 var map_node: Node2D
 
 var build_mode: bool = false
@@ -38,7 +34,7 @@ func initiate_build_mode(tower_type: String) -> void:
 		cancel_build_mode()
 	build_type = tower_type + "T1"
 	build_mode = true
-	$UI.set_tower_preview(build_type, get_global_mouse_position(), GREEN)
+	$UI.set_tower_preview(build_type, get_global_mouse_position(), GameData.colors.GREEN)
 	
 	
 func update_tower_preview() -> void:
@@ -48,12 +44,12 @@ func update_tower_preview() -> void:
 	var tile_position: Vector2 = tower_exclusion.map_to_world(current_tile)
 	
 	if tower_exclusion.get_cellv(current_tile) == -1:
-		$UI.update_tower_preview(tile_position, GREEN)
+		$UI.update_tower_preview(tile_position, GameData.colors.GREEN)
 		build_valid = true
 		build_location = tile_position
 		build_tile = current_tile
 	else:
-		$UI.update_tower_preview(tile_position, RED)
+		$UI.update_tower_preview(tile_position, GameData.colors.RED)
 		build_valid = false
 		
 		

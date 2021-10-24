@@ -14,6 +14,10 @@ config/name="Tower Defense"
 run/main_scene="res://SceneHandler.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GameData="*res://scenes/singletons/GameData.gd"
+
 [debug]
 
 settings/stdout/print_fps=true
