@@ -28,3 +28,27 @@ func update_tower_preview(new_position: Vector2, color: Color):
 	if $TowerPreview/DragTower.modulate != color:
 		$TowerPreview/DragTower.modulate = color
 		$TowerPreview/Sprite.modulate = color
+
+
+func _on_PausePlay_pressed() -> void:
+	var tree: SceneTree = get_tree()
+	var parent: Node = get_parent()
+	if parent.build_mode:
+		parent.cancel_build_mode()
+	if tree.is_paused():
+		tree.paused = false
+	elif parent.current_wave == 0:
+		parent.current_wave = 1
+		parent.start_next_wave()
+	else:
+		tree.paused = true
+
+
+func _on_SpeedUp_pressed() -> void:
+	var parent: Node = get_parent()
+	if parent.build_mode:
+		parent.cancel_build_mode()
+	if Engine.get_time_scale() == 2.0:
+		Engine.set_time_scale(1.0)
+	else:
+		Engine.set_time_scale(2.0)

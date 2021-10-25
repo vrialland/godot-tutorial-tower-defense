@@ -18,8 +18,7 @@ func _ready() -> void:
 	
 	for button in get_tree().get_nodes_in_group("build_buttons"):
 		button.connect("pressed", self, "initiate_build_mode", [button.get_name()])
-		
-	start_next_wave()
+
 
 	
 func _process(delta) -> void:
