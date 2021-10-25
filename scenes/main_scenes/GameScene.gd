@@ -19,7 +19,6 @@ func _ready() -> void:
 	for button in get_tree().get_nodes_in_group("build_buttons"):
 		button.connect("pressed", self, "initiate_build_mode", [button.get_name()])
 
-
 	
 func _process(delta) -> void:
 	if build_mode:
@@ -72,6 +71,8 @@ func verify_and_build() -> void:
 	if build_valid:
 		var new_tower: Node2D = load("res://scenes/turrets/" + build_type + ".tscn").instance()
 		new_tower.position = build_location
+		new_tower.built = true
+		new_tower.type = build_type
 		map_node.get_node("Turrets").add_child(new_tower)
 		map_node.get_node("TowerExclusion").set_cellv(build_tile, 5)
 
