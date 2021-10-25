@@ -95,6 +95,6 @@ func retrieve_wave_data() -> Array:
 
 func spawn_enemies(wave_data: Array) -> void:
 	for enemy in wave_data:
-		var new_enemy: PathFollow2D = load("res://enemies/" + enemy[0] + ".tscn").instance()
+		var new_enemy: PathFollow2D = load("res://scenes/enemies/" + enemy[0] + ".tscn").instance()
 		map_node.get_node("Path").add_child(new_enemy, true)
 		yield(get_tree().create_timer(enemy[1]), "timeout")

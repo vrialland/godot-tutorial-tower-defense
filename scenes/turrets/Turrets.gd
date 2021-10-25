@@ -5,12 +5,31 @@ var enemy_array: Array = []
 var built: bool = false
 var enemy: Node2D
 var type: String
+var ready: bool = true
 
 
 func _ready() -> void:
 	if built:
 		var diameter: float = GameData.tower_data[type].range
-		$Range/CollisionShape2D.get_shape().radius = diameter / 2 
+		$Range/CollisionShape2D.get_shape().radius = diameter / 2
+		
+		
+func _physics_process(delta) -> void:
+	if built and enemy_array.size() > 0:
+		select_enemy()
+		turn()
+		if ready:
+			fire()
+	else:
+		enemy = null
+		
+		
+func fire():
+	ready = false
+	var data: Dictionary = GameData.tower_data[type]
+	enemy.on_hit(data.damage)
+	yield(get_tree().create_timer(data.rof), "timeout")
+	ready = true
 
 
 func turn() -> void:
@@ -24,14 +43,6 @@ func select_enemy() -> void:
 	var max_offset = enemy_progress_array.max()
 	var enemy_index = enemy_progress_array.find(max_offset)
 	enemy = enemy_array[enemy_index]
-
-
-func _physics_process(delta) -> void:
-	if built and enemy_array.size() > 0:
-		select_enemy()
-		turn()
-	else:
-		enemy = null
 
 
 func _on_Range_body_entered(body) -> void:
