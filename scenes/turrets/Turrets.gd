@@ -5,6 +5,7 @@ var enemy_array: Array = []
 var built: bool = false
 var enemy: Node2D
 var type: String
+var category: String
 var ready: bool = true
 
 
@@ -17,7 +18,8 @@ func _ready() -> void:
 func _physics_process(delta) -> void:
 	if built and enemy_array.size() > 0:
 		select_enemy()
-		turn()
+		if not $AnimationPlayer.is_playing():
+			turn()
 		if ready:
 			fire()
 	else:
@@ -27,9 +29,21 @@ func _physics_process(delta) -> void:
 func fire():
 	ready = false
 	var data: Dictionary = GameData.tower_data[type]
+	if category == "projectile":
+		fire_gun()
+	elif category == "missile":
+		fire_missile()
 	enemy.on_hit(data.damage)
 	yield(get_tree().create_timer(data.rof), "timeout")
 	ready = true
+	
+	
+func fire_gun() -> void:
+	$AnimationPlayer.play("Fire")
+	
+	
+func fire_missile() -> void:
+	pass
 
 
 func turn() -> void:
