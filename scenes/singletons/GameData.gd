@@ -16,6 +16,10 @@ const tower_data: Dictionary = {
 }
 
 const colors = {
-	"RED": Color("adff4545"),
-	"GREEN": Color("ad54ff3c")
+	"TRANSLUCENT_RED": Color("adff4545"),
+	"TRANSLUCENT_GREEN": Color("ad54ff3c"),
+	"RED": Color("e11e1e"),
+	"GREEN": Color("4eff15"),
+	"ORANGE": Color("e1be32"),
+	
 }

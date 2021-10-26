@@ -1,6 +1,10 @@
 extends CanvasLayer
 
 
+onready var hp_bar: TextureProgress = $HUD/InfoBar/HBox/HP
+onready var hp_bar_tween: Tween = $HUD/InfoBar/HBox/HP/Tween
+
+
 func set_tower_preview(tower_type: String, mouse_position: Vector2, color: Color) -> void:
 	var drag_tower = load("res://scenes/turrets/" + tower_type + ".tscn").instance()
 	drag_tower.set_name("DragTower")
@@ -28,6 +32,17 @@ func update_tower_preview(new_position: Vector2, color: Color):
 	if $TowerPreview/DragTower.modulate != color:
 		$TowerPreview/DragTower.modulate = color
 		$TowerPreview/Sprite.modulate = color
+		
+		
+func update_health_bar(base_health: int):
+	hp_bar_tween.interpolate_property(hp_bar, "value", hp_bar.value, base_health, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	hp_bar_tween.start()
+	if base_health >= 60:
+		hp_bar.set_tint_progress(GameData.colors.GREEN)
+	elif base_health >= 25:
+		hp_bar.set_tint_progress(GameData.colors.ORANGE)
+	else:
+		hp_bar.set_tint_progress(GameData.colors.RED)
 
 
 func _on_PausePlay_pressed() -> void:

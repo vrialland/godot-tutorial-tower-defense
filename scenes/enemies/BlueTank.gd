@@ -1,7 +1,11 @@
 extends PathFollow2D
 
+
+signal base_damage(damage)
+
 var speed: int = 150
-var hp: int = 1000 
+var hp: int = 1000
+var base_damage: int = 21
 
 
 onready var health_bar: TextureProgress = $HealthBar
@@ -17,6 +21,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if unit_offset == 1.0: # Tank is at the end of the path
+		emit_signal("base_damage", base_damage)
+		queue_free()
 	move(delta)
 	
 	
